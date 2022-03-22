@@ -1,0 +1,41 @@
+* Esta es una aplicacion que esta pensada para instalarse globalmente en el sistema.
+
+info util: https://stackoverflow.com/questions/9795560/schtasks-exe-to-create-a-task-folder
+
+## Process
+
+wallpaper funcionara con carpetas que sirven como modulos de activacion, cada carpeta tendra los archivos .xml,.deskthemepack, que serviran para activar el wallpaper. Sumado a esto se guardara la informacion de dicha carpeta, como path y los datos relacionados, y se le colocara un nombre para identificarlo, esto servira para crear paquetes de configuracion, para activar el wallpaper, asi se pueden escojer paquetes sin tanto rollo.
+
+
+
+* init: iniciara las configuraciones del sistema, para que desktop se pueda crear correctamente, https://www.windows-commandline.com/configure-screensaver-command-line/, aqui nos muestran como congiurar el screensaver, para que sea de fotos. Por defecto tomara la carpeta Photos.
+
+* package: para gestionar los paquetes dentro de la aplicacion, podras desde listastarlos --list, crearlos --create, eliminarlos --delete, y editarlos --edit. la informacion de los paquetes va a estar guardado, en un archivo json package.json, en una carpeta llamada, data en la raiz del proyecto. por defecto estara vacio {}
+    * --create iniciar un packete, se puede ejecutar tanto en la carpeta actuar, como tambien se le puede pasar un nombre --name, para craer uno nuevo. El proceso de creacion del init, se puede hacer mediante de preguntas, para que el usario pueda crearlo custom o se puede pasar el parametro -y, para crearlo por defecto. tambien guardara la informacion dentro del data/package.json.
+
+* on: es el comando para activar los packates, si un paquete ya esta activado, se verificara en una variable encerrada en json, para antes de activar el siguiente paquete, se desactive el anterior, esto para evitar coliciones. --package, para espesificar que paquete se quiere activar.
+
+* off: para desactivar la aplicacion, puedes espesificar el packete --package, o simplemente puedes ejecutarlo, y el buscara desactivar el packete que este activo. por defecto, dejara activo el ultimo theme activado.
+
+* status: indicara el estado de la app, si esta activo o no. y si lo esta indicara que paquete esta activo y desde cuando.
+
+* package.json: el archivo donde estaram guardados todos los paquetes de la aplicacion.
+
+{
+    "jil": {
+        "name": "Jil",
+        "source": "http://www.dnd5eapi.co/api/"
+    },
+    "ramon": {
+        "name": "Ramon",
+        "source": "http://www.dnd5eapi.co/api/"
+    }
+}
+
+* status.json: donde se guarda la actividad de la aplicacion, cuando un paquete se activa, se cambiara la propiedad de on: false a true, para indicar que wallpaper esta activo, en caso de deasctivarse la app, quedara false., junto a esto tambien se puede guardar que packete esta activo.
+
+{
+    "on": false,
+    "package": null,
+    timestramp: "2020-01-01 00:00:00"
+} 
